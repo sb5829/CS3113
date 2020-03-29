@@ -125,6 +125,12 @@ void Entity::CheckCollisionsX(Entity* objects, int objectCount, Entity *success,
                 object->aiState = STOP;
                 
             }
+            if(object->entityType == ENEMY && object->aiType==SHOOTER && !success->isActive){
+                failure->isActive = true;
+                l3->isActive = false;
+                object->aiState = STOP;
+                
+            }
             
             
             float xdist = fabs(position.x - object->position.x );

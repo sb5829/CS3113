@@ -29,6 +29,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E47F6373242EB474009D0102 /* ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball.png; sourceTree = "<group>"; };
+		E47F6374242EB47E009D0102 /* pongpaddle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pongpaddle.png; sourceTree = "<group>"; };
 		E4851A11240869EF00CDC566 /* PongGame */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PongGame; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4851A1C24086AE700CDC566 /* vec4.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = vec4.hpp; sourceTree = "<group>"; };
 		E4851A1D24086AE700CDC566 /* integer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = integer.hpp; sourceTree = "<group>"; };
@@ -460,6 +462,8 @@
 			children = (
 				E4851A1B24086AE700CDC566 /* glm */,
 				E4851B9924086AE800CDC566 /* main.cpp */,
+				E47F6374242EB47E009D0102 /* pongpaddle.png */,
+				E47F6373242EB474009D0102 /* ball.png */,
 				E4851BAE2408C44A00CDC566 /* mickey.png */,
 				E4851BAF2408C45200CDC566 /* minnie.png */,
 				E4851BA024086AE800CDC566 /* ShaderProgram.cpp */,

@@ -49,7 +49,7 @@
       language = ""
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/angiebeck/Documents/Game Design/CS3113/PongGame/PongGame"
+      customWorkingDirectory = "/Users/angiebeck/Documents/GameDesign/CS3113/PongGame 2/PongGame"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"

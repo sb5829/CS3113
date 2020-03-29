@@ -20,28 +20,34 @@
 #include "ShaderProgram.h"
 
 
-enum EntityType {PLAYER, GOAL, TILE, SUCCESS, FAILURE};
+enum EntityType {PLAYER, ENEMY, TILE, SUCCESS, FAILURE, LEVEL1, LEVEL2, LEVEL3, BACTERIA};
+
+enum AIType { PATROL, JUMPER, SHOOTER};
+
+enum AIState {STOP, IDLE, WALKING, ATTACKING, JUMP};
 
 class Entity {
 public:
     
     EntityType entityType;
+    AIType aiType;
+    AIState aiState;
+    
+    Entity *enemy;
+    Entity *bacteria;
     bool isActive = true;
-    //inside Update : exit right away
-    //checkcollision: always false either object is false
-    //if (isActive == false || other.isActive == false) return false;
-    //render: no render
     
     glm::vec3 position;
     glm::vec3 movement;
     glm::vec3 acceleration;
     glm::vec3 velocity;
-    
-    int width = 1;
-    int height = 1;
-    
-    
     float speed;
+    
+    bool jump = false;
+    float jumpPower = 0;
+    
+    float width = 1;
+    float height = 1;
     
     GLuint textureID;
     
@@ -61,16 +67,23 @@ public:
     
     Entity();
     
+    void AI(Entity* player, float ticks);
+    void AIPatrol(Entity* player);
+    void AIJumper(Entity* player, float ticks);
+    void AIShooter(Entity* player, float ticks);
+    void Jump();
+    void Stop();
+    
+    
     bool CheckCollision(Entity *other, Entity *success, Entity *failure);
     
-    void Update(float deltaTime, Entity *platforms, int platformCount, Entity *success, Entity *failure);
+    void Update(float deltaTime, Entity *platforms, Entity *player,int platformCount, Entity *success, Entity *failure, Entity *l1=NULL, Entity *l2=NULL, Entity *l3=NULL, float ticks=NULL);
     void Render(ShaderProgram *program);
     void DrawSpriteFromTextureAtlas(ShaderProgram *program, GLuint textureID, int index);
-    void CheckCollisionsY(Entity* objects, int objectCount, Entity *success, Entity *failure);
-    void CheckCollisionsX(Entity* objects, int objectCount, Entity *success, Entity *failure);
-
+    void CheckCollisionsY(Entity* objects, int objectCount, Entity *success, Entity *failure, Entity *l1, Entity *l2, Entity *l3);
+    void CheckCollisionsX(Entity* objects, int objectCount, Entity *success, Entity *failure, Entity *l1, Entity *l2, Entity *l3);
+    
     void DrawText(ShaderProgram *program, GLuint fontTextureID, std::string text, float size, float spacing, glm::vec3 position);
-    };
-
+};
 
 

@@ -1,12 +1,13 @@
 //
-//  map.cpp
+//  Map.cpp
 //  Platforms
 //
 //  Created by Angie Beck on 4/20/20.
 //  Copyright © 2020 sabrena beck. All rights reserved.
 //
 
-#include "Map.h"
+#include "Map.hpp"
+
 Map::Map(int width, int height, unsigned int *levelData, GLuint textureID, float tile_size, int
          tile_count_x, int tile_count_y)
 {
@@ -31,8 +32,8 @@ void Map::Build()
             float u = (float)(tile % tile_count_x) / (float)tile_count_x;
             float v = (float)(tile / tile_count_x) / (float)tile_count_y;
             
-            float tileWidth = 1.0f/(float)tile_count_x;
-            float tileHeight = 1.0f/(float)tile_count_y;
+            float tileWidth = 0.99f/(float)tile_count_x;
+            float tileHeight = 0.99f/(float)tile_count_y;
             
             float xoffset = -(tile_size / 2); // From center of tile
             float yoffset = (tile_size / 2); // From center of tile
@@ -68,19 +69,42 @@ void Map::Render(ShaderProgram *program)
 {
     glm::mat4 modelMatrix = glm::mat4(1.0f);
     program->SetModelMatrix(modelMatrix);
-
+    
     glUseProgram(program->programID);
-
+    
     glVertexAttribPointer(program->positionAttribute, 2, GL_FLOAT, false, 0, vertices.data());
     glEnableVertexAttribArray(program->positionAttribute);
-
+    
     glVertexAttribPointer(program->texCoordAttribute, 2, GL_FLOAT, false, 0, texCoords.data());
     glEnableVertexAttribArray(program->texCoordAttribute);
-
+    
     glBindTexture(GL_TEXTURE_2D, textureID);
     glDrawArrays(GL_TRIANGLES, 0, (int)vertices.size() / 2);
-
+    
     glDisableVertexAttribArray(program->positionAttribute);
     glDisableVertexAttribArray(program->texCoordAttribute);
 }
-
+bool Map::IsSolid(glm::vec3 position, float *penetration_x, float *penetration_y)
+{
+    *penetration_x = 0;
+    *penetration_y = 0;
+    
+    if (position.x < left_bound || position.x > right_bound) return false;
+    if (position.y > top_bound || position.y < bottom_bound) return false;
+    
+    int tile_x = floor((position.x + (tile_size / 2)) / tile_size);
+    int tile_y = -(ceil(position.y - (tile_size / 2))) / tile_size; // Our array counts up as Y goes down.
+    
+    if (tile_x < 0 || tile_x >= width) return false;
+    if (tile_y < 0 || tile_y >= height) return false;
+    
+    int tile = levelData[tile_y * width + tile_x];
+    if (tile == 0) return false;
+    
+    float tile_center_x = (tile_x * tile_size);
+    float tile_center_y = -(tile_y * tile_size);
+    
+    *penetration_x = (tile_size / 2) - fabs(position.x - tile_center_x);
+    *penetration_y = (tile_size / 2) - fabs(position.y - tile_center_y);
+    return true;
+}
